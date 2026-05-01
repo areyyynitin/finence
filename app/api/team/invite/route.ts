@@ -45,7 +45,7 @@ export async function POST(req: Request) {
             await sendAppEmail({
                 to: email,
                 subject: `You are invited to ${requester.organization.name}`,
-                text: `${session.user.name ?? "An admin"} invited you to join ${requester.organization.name} on Fin Tecch. Sign up at ${process.env.BETTER_AUTH_URL ?? "http://localhost:3000"}/signup, then ask the admin to invite this email again.`
+                text: `${session.user.name ?? "An admin"} invited you to join ${requester.organization.name} on Fin Tecch. Sign up at ${process.env.BETTER_AUTH_URL}/signup, then ask the admin to invite this email again.`
             });
         } catch (error) {
             console.error("Failed to send invite email", error);
@@ -81,7 +81,7 @@ export async function POST(req: Request) {
         await sendAppEmail({
             to: email,
             subject: `Added to ${requester.organization.name}`,
-            text: `You have been added as a ${role} in ${requester.organization.name}. You can now log in at ${process.env.BETTER_AUTH_URL ?? "http://localhost:3000"}/login.`
+            text: `You have been added as a ${role} in ${requester.organization.name}. You can now log in at ${process.env.BETTER_AUTH_URL}/login.`
         });
     } catch (error) {
         console.error("Failed to send member email", error);
