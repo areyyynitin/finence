@@ -45,7 +45,38 @@ export async function POST(req: Request) {
             await sendAppEmail({
                 to: email,
                 subject: `You are invited to ${requester.organization.name}`,
-                text: `${session.user.name ?? "An admin"} invited you to join ${requester.organization.name} on Fin Tecch. Sign up at ${process.env.BETTER_AUTH_URL}/signup, then ask the admin to invite this email again.`
+                html: `
+<div style="font-family: Arial, sans-serif; background-color: #f9fafb; padding: 40px 20px;">
+  <div style="max-width: 600px; margin: 0 auto; background: #ffffff; border-radius: 12px; padding: 30px; border: 1px solid #e5e7eb;">
+    
+    <h2 style="color: #10b981; margin-bottom: 20px;">
+       You've been added!
+    </h2>
+
+    <p style="color: #374151; font-size: 16px; margin-bottom: 16px;">
+      Hello,
+    </p>
+
+    <p style="color: #374151; font-size: 16px; margin-bottom: 16px;">
+      You have been added as a 
+      <strong style="color: #111827;">${role}</strong> 
+      in 
+      <strong style="color: #111827;">${requester.organization.name}</strong>.
+    </p>
+
+    <p style="color: #374151; font-size: 16px; margin-bottom: 24px;">
+      You can now log in and start collaborating with your team.
+    </p>
+
+    <a href="${process.env.BETTER_AUTH_URL}/login"
+       style="display: inline-block; background-color: #10b981; color: #ffffff; text-decoration: none; padding: 12px 20px; border-radius: 8px; font-weight: 600;">
+       Login to your account
+    </a>
+
+  </div>
+</div>
+            `,
+                // text: `${session.user.name ?? "An admin"} invited you to join ${requester.organization.name} on Fin Tecch. Sign up at ${process.env.BETTER_AUTH_URL}/signup, then ask the admin to invite this email again.`
             });
         } catch (error) {
             console.error("Failed to send invite email", error);
@@ -81,7 +112,38 @@ export async function POST(req: Request) {
         await sendAppEmail({
             to: email,
             subject: `Added to ${requester.organization.name}`,
-            text: `You have been added as a ${role} in ${requester.organization.name}. You can now log in at ${process.env.BETTER_AUTH_URL}/login.`
+            html: `
+<div style="font-family: Arial, sans-serif; background-color: #f9fafb; padding: 40px 20px;">
+  <div style="max-width: 600px; margin: 0 auto; background: #ffffff; border-radius: 12px; padding: 30px; border: 1px solid #e5e7eb;">
+    
+    <h2 style="color: #10b981; margin-bottom: 20px;">
+       You've been added!
+    </h2>
+
+    <p style="color: #374151; font-size: 16px; margin-bottom: 16px;">
+      Hello,
+    </p>
+
+    <p style="color: #374151; font-size: 16px; margin-bottom: 16px;">
+      You have been added as a 
+      <strong style="color: #111827;">${role}</strong> 
+      in 
+      <strong style="color: #111827;">${requester.organization.name}</strong>.
+    </p>
+
+    <p style="color: #374151; font-size: 16px; margin-bottom: 24px;">
+      You can now log in and start collaborating with your team.
+    </p>
+
+    <a href="${process.env.BETTER_AUTH_URL}/login"
+       style="display: inline-block; background-color: #10b981; color: #ffffff; text-decoration: none; padding: 12px 20px; border-radius: 8px; font-weight: 600;">
+       Login to your account
+    </a>
+
+  </div>
+</div>
+            `,
+            // text: `You have been added as a ${role} in ${requester.organization.name}. You can now log in at ${process.env.BETTER_AUTH_URL}/login.`
         });
     } catch (error) {
         console.error("Failed to send member email", error);
