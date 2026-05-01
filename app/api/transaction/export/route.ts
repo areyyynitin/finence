@@ -52,31 +52,47 @@ export async function GET(req: Request) {
         }
     });
 
-    const headersRow = [
-        "id",
-        "date",
-        "type",
-        "amount",
-        "description",
-        "category",
-        "payerName",
-        "email",
-        "reason"
-    ];
+    let headersRow: string[] = [];
+    let rows: string[] = [];
 
-    const rows = transactions.map((tx) => [
-        csvEscape(tx.id),
-        csvEscape(tx.date.toISOString()),
-        csvEscape(tx.type),
-        csvEscape(tx.amount),
-        csvEscape(tx.description),
-        csvEscape(tx.category),
-        csvEscape(tx.payerName),
-        csvEscape(tx.email),
-        csvEscape(tx.reason)
-    ].join(","));
+    if (type === "income") {
+        headersRow = [
+            "date",
+            "payerName",
+            "amount",
+            "description",
+            "email"
+        ];
+
+        rows = transactions.map((tx) => [
+            csvEscape(new Date(tx.date).toLocaleDateString("en-IN")),
+            csvEscape(tx.payerName),
+            csvEscape(tx.amount),
+            csvEscape(tx.description),
+            csvEscape(tx.email),
+        ].join(","));
+
+    } else if (type === "expense") {
+        headersRow = [
+            "date",
+            "amount",
+            "description",
+            "reason"
+        ];
+
+        rows = transactions.map((tx) => [
+            csvEscape(tx.date.toLocaleDateString("en-IN")),
+            csvEscape(tx.amount),
+            csvEscape(tx.description),
+            csvEscape(tx.reason),
+        ].join(","));
+    }
 
     const csv = [headersRow.join(","), ...rows].join("\n");
+
+
+
+
     const filename = `${type}-transactions-${new Date().toISOString().slice(0, 10)}.csv`;
 
     return new NextResponse(csv, {
@@ -87,3 +103,6 @@ export async function GET(req: Request) {
         }
     });
 }
+
+
+
