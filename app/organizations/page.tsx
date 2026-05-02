@@ -1,5 +1,4 @@
 import { AppShell } from "@/components/app-shell";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
@@ -8,6 +7,7 @@ import { auth } from "@/src/lib/auth";
 import prisma from "@/src/lib/prisma";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
+import { cn } from "@/lib/utils";
 
 export default async function OrganizationsPage() {
     const session = await auth.api.getSession({
@@ -66,46 +66,63 @@ export default async function OrganizationsPage() {
 
     return (
         <AppShell user={session.user} organizations={organizations}>
-            <div className="space-y-6">
-                <Card className="border-slate-200 shadow-sm">
-                    <CardHeader>
-                        <CardTitle>Create Organization</CardTitle>
-                        <CardDescription>Add a new workspace for another team or business unit.</CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                        <form action={createOrganization} className="grid gap-4 md:grid-cols-[1fr_1fr_auto] md:items-end">
-                            <div className="space-y-2">
-                                <Label htmlFor="org-name">Name</Label>
-                                <Input id="org-name" name="name" required placeholder="North Region Ops" />
-                            </div>
-                            <div className="space-y-2">
-                                <Label htmlFor="org-description">Description</Label>
-                                <Input id="org-description" name="description" placeholder="Optional" />
-                            </div>
-                            <Button type="submit" className="bg-slate-900 text-white hover:bg-slate-800">Create</Button>
-                        </form>
-                    </CardContent>
-                </Card>
-
-                <Card className="border-slate-200 shadow-sm">
-                    <CardHeader>
-                        <CardTitle>Your Organizations</CardTitle>
-                        <CardDescription>{memberships.length} organization membership(s)</CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                        <div className="divide-y divide-slate-100">
-                            {memberships.map((membership) => (
-                                <div key={membership.id} className="flex items-center justify-between py-3">
-                                    <div>
-                                        <p className="text-sm font-medium text-slate-900">{membership.organization.name}</p>
-                                        <p className="text-xs text-slate-500">{membership.organization.description || "No description"}</p>
-                                    </div>
-                                    <Badge variant="outline" className="capitalize">{membership.role}</Badge>
-                                </div>
-                            ))}
+            <div className="space-y-10">
+                <div className="bg-white border-4 border-foreground shadow-[8px_8px_0px_0px_#14110d] p-8">
+                    <div className="mb-6">
+                        <h2 className="text-2xl font-black uppercase tracking-tight">Create Organization</h2>
+                        <p className="text-sm font-bold text-foreground/60 uppercase">Add a new workspace for another team</p>
+                    </div>
+                    <form action={createOrganization} className="grid gap-6 md:grid-cols-[1fr_1fr_auto] md:items-end">
+                        <div className="space-y-2">
+                            <Label htmlFor="org-name" className="font-black uppercase text-xs">Name</Label>
+                            <Input 
+                                id="org-name" 
+                                name="name" 
+                                required 
+                                placeholder="North Region Ops" 
+                                className="border-2 border-foreground rounded-none font-bold bg-white focus-visible:ring-0 placeholder:text-foreground/30 h-12"
+                            />
                         </div>
-                    </CardContent>
-                </Card>
+                        <div className="space-y-2">
+                            <Label htmlFor="org-description" className="font-black uppercase text-xs">Description</Label>
+                            <Input 
+                                id="org-description" 
+                                name="description" 
+                                placeholder="Optional" 
+                                className="border-2 border-foreground rounded-none font-bold bg-white focus-visible:ring-0 placeholder:text-foreground/30 h-12"
+                            />
+                        </div>
+                        <Button 
+                            type="submit" 
+                            className="bg-primary text-primary-foreground border-2 border-foreground font-black uppercase rounded-none shadow-[4px_4px_0px_0px_#14110d] hover:shadow-none hover:translate-x-[4px] hover:translate-y-[4px] transition-all h-12 px-8"
+                        >
+                            Create
+                        </Button>
+                    </form>
+                </div>
+
+                <div className="bg-white border-4 border-foreground shadow-[8px_8px_0px_0px_#14110d] overflow-hidden">
+                    <div className="p-8 border-b-4 border-foreground bg-accent/10">
+                        <h2 className="text-2xl font-black uppercase tracking-tight">Your Organizations</h2>
+                        <p className="text-sm font-bold text-foreground/60 uppercase">{memberships.length} active memberships</p>
+                    </div>
+                    <div className="divide-y-2 divide-foreground">
+                        {memberships.map((membership) => (
+                            <div key={membership.id} className="flex flex-col sm:flex-row sm:items-center justify-between p-8 hover:bg-secondary/5 transition-colors gap-4">
+                                <div className="flex flex-col">
+                                    <p className="text-xl font-black uppercase tracking-tight">{membership.organization.name}</p>
+                                    <p className="text-sm font-bold text-foreground/50 uppercase">{membership.organization.description || "No description provided"}</p>
+                                </div>
+                                <Badge className={cn(
+                                    "w-fit font-black uppercase text-xs rounded-none border-2 px-3 py-1 shadow-[2px_2px_0px_0px_#14110d]",
+                                    membership.role === "admin" ? "bg-emerald-400 text-black border-foreground" : "bg-white text-black border-foreground"
+                                )}>
+                                    {membership.role}
+                                </Badge>
+                            </div>
+                        ))}
+                    </div>
+                </div>
             </div>
         </AppShell>
     );

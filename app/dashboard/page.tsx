@@ -29,114 +29,123 @@ export default async function DashboardPage() {
     const organizations = memberships.map(m => m.organization);
     const firstOrgId = organizations[0].id;
 
-    // Note: In a real app, we'd use the selected org from a cookie or param.
-    // For this exercise, we initialize with first found.
     const stats = await getDashboardStats(firstOrgId);
 
     return (
         <AppShell user={session.user} organizations={organizations}>
-            <div className="flex flex-col gap-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
-
+            <div className="flex flex-col gap-10">
+                
                 {/* Metric Cards */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm transition-all hover:shadow-md">
-                        <p className="text-xs font-medium text-slate-500 uppercase tracking-wider mb-1">Total Balance</p>
-                        <h2 className="text-3xl font-light tracking-tight">₹{stats.totalBalance.toLocaleString()}</h2>
-                        <p className="text-xs text-emerald-600 mt-2 font-medium">Net available funds</p>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div className="bg-white p-8 border-4 border-foreground shadow-[8px_8px_0px_0px_#14110d] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[6px_6px_0px_0px_#14110d] transition-all">
+                        <p className="text-xs font-black text-foreground/60 uppercase tracking-widest mb-2">Total Balance</p>
+                        <h2 className="text-4xl font-black tracking-tight">₹{stats.totalBalance.toLocaleString()}</h2>
+                        <div className="mt-4 pt-4 border-t-2 border-foreground/10">
+                            <span className="bg-emerald-400 text-black px-2 py-1 text-[10px] font-black uppercase border-2 border-foreground">Available</span>
+                        </div>
                     </div>
-                    <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm transition-all hover:shadow-md">
-                        <p className="text-xs font-medium text-slate-500 uppercase tracking-wider mb-1">Total Income</p>
-                        <h2 className="text-3xl font-light tracking-tight">₹{stats.totalIncome.toLocaleString()}</h2>
-                        <p className="text-xs text-slate-400 mt-2 font-medium">Lifetime received</p>
+                    <div className="bg-white p-8 border-4 border-foreground shadow-[8px_8px_0px_0px_#14110d] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[6px_6px_0px_0px_#14110d] transition-all">
+                        <p className="text-xs font-black text-foreground/60 uppercase tracking-widest mb-2">Total Income</p>
+                        <h2 className="text-4xl font-black tracking-tight">₹{stats.totalIncome.toLocaleString()}</h2>
+                        <div className="mt-4 pt-4 border-t-2 border-foreground/10">
+                            <span className="bg-primary text-primary-foreground px-2 py-1 text-[10px] font-black uppercase border-2 border-foreground">Lifetime</span>
+                        </div>
                     </div>
-                    <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm transition-all hover:shadow-md">
-                        <p className="text-xs font-medium text-slate-500 uppercase tracking-wider mb-1">Total Expenses</p>
-                        <h2 className="text-3xl font-light tracking-tight">₹{stats.totalExpense.toLocaleString()}</h2>
-                        <p className="text-xs text-rose-500 mt-2 font-medium">Lifetime spent</p>
+                    <div className="bg-white p-8 border-4 border-foreground shadow-[8px_8px_0px_0px_#14110d] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[6px_6px_0px_0px_#14110d] transition-all">
+                        <p className="text-xs font-black text-foreground/60 uppercase tracking-widest mb-2">Total Expenses</p>
+                        <h2 className="text-4xl font-black tracking-tight">₹{stats.totalExpense.toLocaleString()}</h2>
+                        <div className="mt-4 pt-4 border-t-2 border-foreground/10">
+                            <span className="bg-accent text-accent-foreground px-2 py-1 text-[10px] font-black uppercase border-2 border-foreground">Outflow</span>
+                        </div>
                     </div>
                 </div>
 
-                <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
-                    {/* Chart Placeholder (simplified for this design) */}
-                    <div className="lg:col-span-3 bg-white p-6 rounded-xl border border-slate-200 shadow-sm flex flex-col min-h-[400px]">
-                        <div className="flex items-center justify-between mb-8">
-                            <h3 className="text-sm font-semibold">Monthly Analytics</h3>
-                            <div className="flex items-center gap-4 text-[10px] text-slate-500 font-medium">
-                                <div className="flex items-center gap-1.5">
-                                    <div className="w-2 h-2 rounded-full bg-slate-900"></div>
-                                    <span>Income</span>
+                <div className="grid grid-cols-1 lg:grid-cols-5 gap-10">
+                    {/* Brutalist Chart */}
+                    <div className="lg:col-span-3 bg-white p-8 border-4 border-foreground shadow-[12px_12px_0px_0px_#14110d] flex flex-col min-h-[450px]">
+                        <div className="flex items-center justify-between mb-10 pb-4 border-b-4 border-foreground">
+                            <h3 className="text-xl font-black uppercase tracking-tighter">Monthly Analytics</h3>
+                            <div className="flex items-center gap-6">
+                                <div className="flex items-center gap-2">
+                                    <div className="w-4 h-4 bg-primary border-2 border-foreground"></div>
+                                    <span className="text-[10px] font-black uppercase">Income</span>
                                 </div>
-                                <div className="flex items-center gap-1.5">
-                                    <div className="w-2 h-2 rounded-full bg-slate-200"></div>
-                                    <span>Expenses</span>
+                                <div className="flex items-center gap-2">
+                                    <div className="w-4 h-4 bg-secondary border-2 border-foreground"></div>
+                                    <span className="text-[10px] font-black uppercase">Expense</span>
                                 </div>
                             </div>
                         </div>
 
-                        <div className="flex-1 flex items-end justify-between px-4 pb-2 border-b border-slate-50">
+                        <div className="flex-1 flex items-end justify-between px-4 pb-4 border-b-4 border-foreground relative h-64">
+                            {/* Grid Lines */}
+                            <div className="absolute inset-0 flex flex-col justify-between pointer-events-none opacity-10">
+                                {[1, 2, 3, 4].map(i => <div key={i} className="w-full border-t-2 border-foreground"></div>)}
+                            </div>
+
                             {stats.monthlyStats.map((m: any, idx: number) => {
                                 const maxVal = Math.max(...stats.monthlyStats.map((s: any) => Math.max(s.income, s.expense))) || 1;
-                                const incH = (m.income / maxVal) * 200;
-                                const expH = (m.expense / maxVal) * 200;
+                                const incH = (m.income / maxVal) * 250;
+                                const expH = (m.expense / maxVal) * 250;
 
                                 return (
-                                    <div key={idx} className="flex flex-col items-center gap-2 w-12 group">
-                                        <div className="flex items-end gap-1 w-full h-[200px]">
+                                    <div key={idx} className="flex flex-col items-center gap-4 w-12 z-10">
+                                        <div className="flex items-end gap-1.5 w-full h-[250px]">
                                             <div
                                                 style={{ height: `${expH}px` }}
-                                                className="flex-1 bg-slate-100 rounded-t-sm transition-all group-hover:bg-slate-200"
+                                                className="flex-1 bg-secondary border-2 border-foreground shadow-[2px_2px_0px_0px_#14110d] transition-all hover:translate-y-[-2px] hover:shadow-[4px_4px_0px_0px_#14110d]"
                                             ></div>
                                             <div
                                                 style={{ height: `${incH}px` }}
-                                                className="flex-1 bg-slate-900 rounded-t-sm transition-all group-hover:bg-slate-800"
+                                                className="flex-1 bg-primary border-2 border-foreground shadow-[2px_2px_0px_0px_#14110d] transition-all hover:translate-y-[-2px] hover:shadow-[4px_4px_0px_0px_#14110d]"
                                             ></div>
                                         </div>
-                                        <span className="text-[10px] font-medium text-slate-400">{m.month}</span>
+                                        <span className="text-[10px] font-black uppercase tracking-tighter bg-foreground text-white px-1">{m.month}</span>
                                     </div>
                                 )
                             })}
 
                             {stats.monthlyStats.length === 0 && (
-                                <div className="flex-1 flex items-center justify-center text-slate-300 text-sm italic">
-                                    No data available yet
+                                <div className="flex-1 flex items-center justify-center text-foreground font-black uppercase italic text-sm">
+                                    Waiting for data...
                                 </div>
                             )}
                         </div>
                     </div>
 
-                    {/* Recent Transactions */}
-                    <div className="lg:col-span-2 bg-white rounded-xl border border-slate-200 shadow-sm flex flex-col overflow-hidden">
-                        <div className="p-6 border-b border-slate-50">
-                            <h3 className="text-sm font-semibold">Recent Transactions</h3>
-                        </div>
-                        <div className="flex-1">
-                            <div className="divide-y divide-slate-50">
+                    {/* Recent Transactions List */}
+                    <div className="lg:col-span-2 flex flex-col gap-6">
+                        <div className="bg-white border-4 border-foreground shadow-[8px_8px_0px_0px_#14110d] flex flex-col overflow-hidden h-full">
+                            <div className="p-6 border-b-4 border-foreground bg-accent/20">
+                                <h3 className="text-lg font-black uppercase tracking-tighter">Recent Records</h3>
+                            </div>
+                            <div className="flex-1 divide-y-2 divide-foreground">
                                 {stats.recentTransactions.map((tx: any) => (
-                                    <div key={tx.id} className="px-6 py-4 flex items-center justify-between hover:bg-slate-50/50 transition-colors">
-                                        <div className="flex flex-col min-w-0">
-                                            <span className="text-sm font-medium truncate">{tx.description || tx.payerName || tx.reason}</span>
-                                            <span className="text-xs text-slate-400">
+                                    <div key={tx.id} className="p-6 flex items-center justify-between hover:bg-secondary/10 transition-colors">
+                                        <div className="flex flex-col min-w-0 pr-4">
+                                            <span className="text-sm font-black uppercase truncate tracking-tight">{tx.description || tx.payerName || tx.reason || 'Record'}</span>
+                                            <span className="text-[10px] font-bold text-foreground/60 uppercase mt-1">
                                                 {tx.type === 'income' ? 'Income' : 'Expense'} • {format(new Date(tx.date), 'MMM d')}
                                             </span>
                                         </div>
                                         <span className={cn(
-                                            "text-sm font-semibold",
-                                            tx.type === 'income' ? "text-emerald-600" : "text-slate-900"
+                                            "text-md font-black px-2 py-1 border-2 border-foreground",
+                                            tx.type === 'income' ? "bg-emerald-400" : "bg-white"
                                         )}>
                                             {tx.type === 'income' ? '+' : '-'} ₹{tx.amount.toLocaleString()}
                                         </span>
                                     </div>
                                 ))}
                                 {stats.recentTransactions.length === 0 && (
-                                    <div className="p-12 text-center text-slate-400 text-sm">
-                                        No transactions recorded
+                                    <div className="p-20 text-center text-foreground/40 font-black uppercase italic text-sm">
+                                        Nothing yet
                                     </div>
                                 )}
                             </div>
+                            <a href="/transactions" className="p-5 text-center text-xs font-black uppercase bg-foreground text-white hover:bg-foreground/90 transition-colors">
+                                Full Transaction Log
+                            </a>
                         </div>
-                        <Link href="/transactions" className="p-4 text-center text-xs font-medium text-slate-400 hover:text-slate-600 bg-slate-50 transition-colors">
-                            View All Activity
-                        </Link>
                     </div>
                 </div>
 
@@ -145,9 +154,4 @@ export default async function DashboardPage() {
             <TransactionModal />
         </AppShell>
     );
-}
-
-// Inline Link for brevity in shell
-function Link({ href, children, className }: { href: string, children: React.ReactNode, className?: string }) {
-    return <a href={href} className={className}>{children}</a>
 }

@@ -2,7 +2,6 @@ import { auth } from "@/src/lib/auth";
 import prisma from "@/src/lib/prisma";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
@@ -60,30 +59,41 @@ export default async function OnboardingPage() {
     }
 
     return (
-        <div className="flex min-h-screen items-center justify-center bg-slate-50 p-4">
-            <Card className="w-full max-w-lg border-slate-200 shadow-sm">
-                <CardHeader className="space-y-1">
-                    <CardTitle className="text-2xl font-semibold tracking-tight">Set up your organization</CardTitle>
-                    <CardDescription>
-                        Create your first organization to continue to the dashboard.
-                    </CardDescription>
-                </CardHeader>
-                <CardContent>
-                    <form action={createOrganization} className="space-y-4">
-                        <div className="space-y-2">
-                            <Label htmlFor="name">Organization name</Label>
-                            <Input id="name" name="name" placeholder="Acme Finance" required />
-                        </div>
-                        <div className="space-y-2">
-                            <Label htmlFor="description">Description (optional)</Label>
-                            <Input id="description" name="description" placeholder="Team budget and expense tracking" />
-                        </div>
-                        <Button type="submit" className="w-full bg-slate-900 text-white hover:bg-slate-800">
-                            Continue to Dashboard
-                        </Button>
-                    </form>
-                </CardContent>
-            </Card>
+        <div className="flex min-h-screen items-center justify-center bg-background p-6">
+            <div className="w-full max-w-lg bg-white border-4 border-foreground shadow-[12px_12px_0px_0px_#14110d] p-8 md:p-12 animate-in slide-in-from-bottom-8 duration-700">
+                <div className="mb-10 text-center">
+                    <h1 className="text-4xl font-black uppercase tracking-tighter mb-2">Setup Org</h1>
+                    <p className="text-sm font-bold text-foreground/60 uppercase">Create your first workspace to begin</p>
+                </div>
+                
+                <form action={createOrganization} className="space-y-8">
+                    <div className="space-y-2">
+                        <Label htmlFor="name" className="font-black uppercase text-xs">Organization name</Label>
+                        <Input 
+                            id="name" 
+                            name="name" 
+                            placeholder="Acme Finance" 
+                            required 
+                            className="border-2 border-foreground rounded-none font-bold bg-white focus-visible:ring-0 placeholder:text-foreground/30 h-12"
+                        />
+                    </div>
+                    <div className="space-y-2">
+                        <Label htmlFor="description" className="font-black uppercase text-xs">Description (optional)</Label>
+                        <Input 
+                            id="description" 
+                            name="description" 
+                            placeholder="Team budget and expense tracking" 
+                            className="border-2 border-foreground rounded-none font-bold bg-white focus-visible:ring-0 placeholder:text-foreground/30 h-12"
+                        />
+                    </div>
+                    <Button 
+                        type="submit" 
+                        className="w-full bg-primary text-primary-foreground border-2 border-foreground font-black uppercase rounded-none shadow-[4px_4px_0px_0px_#14110d] hover:shadow-none hover:translate-x-[4px] hover:translate-y-[4px] transition-all h-14"
+                    >
+                        Continue to Dashboard
+                    </Button>
+                </form>
+            </div>
         </div>
     );
 }

@@ -48,9 +48,9 @@ export function TeamInviteForm({ organizationId }: { organizationId: string }) {
     };
 
     return (
-        <form onSubmit={onSubmit} className="grid gap-4 md:grid-cols-[1fr_160px_auto] md:items-end">
+        <form onSubmit={onSubmit} className="grid gap-6 md:grid-cols-[1fr_200px_auto] md:items-end">
             <div className="space-y-2">
-                <Label htmlFor="invite-email">Member email</Label>
+                <Label htmlFor="invite-email" className="font-black uppercase text-xs">Member email</Label>
                 <Input
                     id="invite-email"
                     type="email"
@@ -58,22 +58,27 @@ export function TeamInviteForm({ organizationId }: { organizationId: string }) {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="teammate@example.com"
+                    className="border-2 border-foreground rounded-none font-bold bg-white focus-visible:ring-0 placeholder:text-foreground/30 h-12"
                 />
             </div>
             <div className="space-y-2">
-                <Label>Role</Label>
+                <Label className="font-black uppercase text-xs">Role</Label>
                 <Select value={role} onValueChange={(value: "admin" | "viewer") => setRole(value)}>
-                    <SelectTrigger>
+                    <SelectTrigger className="border-2 border-foreground rounded-none font-bold bg-white focus:ring-0 h-12">
                         <SelectValue />
                     </SelectTrigger>
-                    <SelectContent>
-                        <SelectItem value="viewer">Viewer</SelectItem>
-                        <SelectItem value="admin">Admin</SelectItem>
+                    <SelectContent className="border-2 border-foreground rounded-none shadow-[4px_4px_0px_0px_#14110d]">
+                        <SelectItem value="viewer" className="font-bold hover:bg-secondary/20 rounded-none cursor-pointer">Viewer</SelectItem>
+                        <SelectItem value="admin" className="font-bold hover:bg-secondary/20 rounded-none cursor-pointer">Admin</SelectItem>
                     </SelectContent>
                 </Select>
             </div>
-            <Button type="submit" className="bg-slate-900 text-white hover:bg-slate-800" disabled={loading}>
-                {loading ? "Inviting..." : "Invite"}
+            <Button 
+                type="submit" 
+                className="bg-primary text-primary-foreground border-2 border-foreground font-black uppercase rounded-none shadow-[4px_4px_0px_0px_#14110d] hover:shadow-none hover:translate-x-[4px] hover:translate-y-[4px] transition-all h-12 px-8" 
+                disabled={loading}
+            >
+                {loading ? "Inviting..." : "Invite Member"}
             </Button>
         </form>
     );

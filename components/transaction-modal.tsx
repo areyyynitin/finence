@@ -78,91 +78,101 @@ export function TransactionModal() {
 
     return (
         <Dialog open={isTransactionModalOpen} onOpenChange={setTransactionModalOpen}>
-            <DialogContent className="sm:max-w-[425px]">
+            <DialogContent className="sm:max-w-[425px] border-4 border-foreground shadow-[8px_8px_0px_0px_#14110d] rounded-none bg-background p-8">
                 <DialogHeader>
-                    <DialogTitle>Add Transaction</DialogTitle>
-                    <DialogDescription>Record a new income or expense for your organization.</DialogDescription>
+                    <DialogTitle className="font-black uppercase text-2xl tracking-tight">Add Transaction</DialogTitle>
+                    <DialogDescription className="font-bold text-foreground/60 uppercase text-xs">Record a new income or expense for your organization.</DialogDescription>
                 </DialogHeader>
-                <form onSubmit={handleSave} className="space-y-4 py-4">
+                <form onSubmit={handleSave} className="space-y-6 py-4">
                     <div className="grid grid-cols-2 gap-4">
                         <div className="space-y-2">
-                            <Label>Type</Label>
+                            <Label className="font-black uppercase text-xs">Type</Label>
                             <Select value={type} onValueChange={(v: 'income' | 'expense') => setType(v)}>
-                                <SelectTrigger>
+                                <SelectTrigger className="border-2 border-foreground rounded-none font-bold bg-white focus:ring-0">
                                     <SelectValue />
                                 </SelectTrigger>
-                                <SelectContent>
-                                    <SelectItem value="income">Income</SelectItem>
-                                    <SelectItem value="expense">Expense</SelectItem>
+                                <SelectContent className="border-2 border-foreground rounded-none shadow-[4px_4px_0px_0px_#14110d]">
+                                    <SelectItem value="income" className="font-bold hover:bg-secondary/20 rounded-none">Income</SelectItem>
+                                    <SelectItem value="expense" className="font-bold hover:bg-secondary/20 rounded-none">Expense</SelectItem>
                                 </SelectContent>
                             </Select>
                         </div>
                         <div className="space-y-2">
-                            <Label>Amount (₹)</Label>
+                            <Label className="font-black uppercase text-xs">Amount (₹)</Label>
                             <Input
                                 type="number"
                                 placeholder="0.00"
                                 required
                                 value={amount}
                                 onChange={e => setAmount(e.target.value)}
+                                className="border-2 border-foreground rounded-none font-bold bg-white focus-visible:ring-0 placeholder:text-foreground/30"
                             />
                         </div>
                     </div>
 
                     <div className="space-y-2">
-                        <Label>Date</Label>
+                        <Label className="font-black uppercase text-xs">Date</Label>
                         <Input
                             type="date"
                             required
                             value={date}
                             onChange={e => setDate(e.target.value)}
+                            className="border-2 border-foreground rounded-none font-bold bg-white focus-visible:ring-0"
                         />
                     </div>
 
                     <div className="space-y-2">
-                        <Label>Description</Label>
+                        <Label className="font-black uppercase text-xs">Description</Label>
                         <Input
                             placeholder="Product sale, Rent, etc."
                             value={description}
                             onChange={e => setDescription(e.target.value)}
+                            className="border-2 border-foreground rounded-none font-bold bg-white focus-visible:ring-0 placeholder:text-foreground/30"
                         />
                     </div>
 
                     {type === 'income' ? (
                         <>
                             <div className="space-y-2">
-                                <Label>Payer Name</Label>
+                                <Label className="font-black uppercase text-xs">Payer Name</Label>
                                 <Input
                                     placeholder="Client name"
                                     required
                                     value={payerName}
                                     onChange={e => setPayerName(e.target.value)}
+                                    className="border-2 border-foreground rounded-none font-bold bg-white focus-visible:ring-0 placeholder:text-foreground/30"
                                 />
                             </div>
                             <div className="space-y-2">
-                                <Label>Payer Email (for confirmation)</Label>
+                                <Label className="font-black uppercase text-xs">Payer Email</Label>
                                 <Input
                                     type="email"
                                     placeholder="client@example.com"
                                     value={email}
                                     onChange={e => setEmail(e.target.value)}
+                                    className="border-2 border-foreground rounded-none font-bold bg-white focus-visible:ring-0 placeholder:text-foreground/30"
                                 />
                             </div>
                         </>
                     ) : (
                         <div className="space-y-2">
-                            <Label>Reason</Label>
+                            <Label className="font-black uppercase text-xs">Reason</Label>
                             <Input
                                 placeholder="Office supplies, Salary..."
                                 required
                                 value={reason}
                                 onChange={e => setReason(e.target.value)}
+                                className="border-2 border-foreground rounded-none font-bold bg-white focus-visible:ring-0 placeholder:text-foreground/30"
                             />
                         </div>
                     )}
 
-                    <DialogFooter>
-                        <Button type="submit" className="bg-slate-900" >
+                    <DialogFooter className="pt-4">
+                        <Button 
+                            type="submit" 
+                            disabled={loading}
+                            className="w-full bg-primary text-primary-foreground border-2 border-foreground font-black uppercase rounded-none shadow-[4px_4px_0px_0px_#14110d] hover:shadow-none hover:translate-x-[4px] hover:translate-y-[4px] transition-all py-6"
+                        >
                             {loading ? 'Saving...' : 'Save Transaction'}
                         </Button>
                     </DialogFooter>
